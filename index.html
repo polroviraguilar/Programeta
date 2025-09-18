@@ -1,165 +1,110 @@
 <!DOCTYPE html>
 <html lang="ca">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Programeta 📖</title>
-  <link rel="stylesheet" href="css/style.css" />
-  <!-- JS (mòduls) -->
-  <script type="module" src="js/firebase.js"></script>
-  <script type="module" src="js/app.firebase.js"></script>
-  
-  <style>
-    /* Estils mínims específics d’aquesta pàgina (estructura) */
-    .tabs { display:flex; gap:8px; margin:12px 0; flex-wrap: wrap; }
-    .tab { padding:8px 12px; border-radius:999px; border:1px solid #ddd; background:#fff; cursor:pointer; }
-    .tab.active { background:#4f46e5; color:#fff; border-color:#4f46e5; }
-    .hidden { display:none; }
-    .container { max-width: 1000px; margin: 0 auto; padding: 16px; }
-    .card { background: #fff; padding: 16px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,.06); margin-bottom: 16px; }
-    .muted { color: #666; font-size: 13px; }
-    .btn { padding:10px 12px; border-radius:10px; border:0; cursor:pointer; }
-    .btn.primary { background:#4f46e5; color:#fff; }
-    .btn.ghost { background:#e5e7eb; }
-    .btn.danger { background:#ef4444; color:#fff; }
-
-    /* Setmanal */
-    .week-grid { border-collapse: collapse; width:100%; background:#fff; border-radius:12px; overflow:hidden; }
-    .week-grid th, .week-grid td { border:1px solid #eee; padding:10px; vertical-align: top; }
-    .week-grid th { background:#fafafe; font-weight:600; }
-    .cell { min-height:64px; position:relative; }
-    .cell .act { font-size:13px; background:#eef2ff; padding:6px 8px; border-radius:8px; display:inline-block; margin-top:4px; }
-    .cell .meta { color:#666; font-size:12px; margin-top:4px; }
-    .cell .edit { position:absolute; top:6px; right:6px; font-size:12px; border:0; background:#e5e7eb; padding:4px 6px; border-radius:6px; cursor:pointer; }
-    .cell .edit:hover { filter:brightness(0.95); }
-
-    /* Anual */
-    .year-grid { display:grid; grid-template-columns: repeat(13, 1fr); gap:6px; }
-    .year-grid .wk { padding:8px; text-align:center; border:1px solid #eee; background:#fff; border-radius:8px; cursor:pointer; font-size:12px; }
-    .year-grid .wk.active { background:#4f46e5; color:#fff; }
-
-    /* Modal */
-    dialog { border:0; border-radius:12px; padding:0; }
-    .modal { padding:16px; min-width:320px; max-width:480px; }
-    .modal h3 { margin:0 0 8px; }
-    .row { display:grid; gap:8px; }
-    .row.cols-2 { grid-template-columns: 1fr 1fr; }
-    .row input, .row select, .row textarea { padding:10px; border:1px solid #ddd; border-radius:10px; font-size:14px; }
-    .modal .actions { display:flex; gap:8px; justify-content:flex-end; margin-top:12px; }
-
-    /* Lliçonari */
-    .filters { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px; }
-    .list { display:grid; gap:10px; }
-    .item { display:grid; gap:8px; padding:12px; border:1px solid #eee; border-radius:10px; background:#fafafe; }
-    .item-head { display:flex; align-items:baseline; justify-content:space-between; gap:10px; }
-    .print-note { font-size:12px; color:#666; margin-left:auto; }
-
-    @media print {
-      header, nav, .tabs, .actions, .filters, footer, dialog { display:none !important; }
-      .card { box-shadow:none; border:0; }
-    }
-  </style>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <header class="container">
-    <h1>Programeta 📖</h1>
-    <p>La teva llibreta docent digital</p>
-  </header>
+  <div class="app-container">
+    <header class="app-header">
+      <h1>Programeta <span class="emoji">📖</span></h1>
+      <p class="subtitle">La teva llibreta docent digital</p>
+    </header>
 
-  <nav class="container tabs" id="mainTabs">
-    <button class="tab active" data-tab="horari">Horari</button>
-    <button class="tab" data-tab="lliconari">Lliçonari</button>
-  </nav>
+    <!-- Pestanyes principals -->
+    <nav id="mainTabs" class="tabs">
+      <button class="tab active" data-tab="horari">Horari</button>
+      <button class="tab" data-tab="lliconari">Lliçonari</button>
+    </nav>
 
-  <main class="container">
-    <!-- HORARI -->
+    <!-- Contingut: HORARI -->
     <section id="tab-horari">
-      <div class="tabs" id="horariTabs">
+      <nav id="horariTabs" class="tabs sub-tabs">
         <button class="tab active" data-subtab="setmanal">Setmanal</button>
         <button class="tab" data-subtab="anual">Anual</button>
-        <div class="print-note">Setmana <span id="weekLabel"></span></div>
+      </nav>
+
+      <!-- Subpestanya setmanal -->
+      <div id="subtab-setmanal" class="card">
+        <div class="week-nav">
+          <button id="prevWeek" class="ghost">← Setmana anterior</button>
+          <div>
+            <span id="weekLabel" class="badge"></span>
+            <span id="weekRange" class="muted"></span>
+          </div>
+          <button id="nextWeek" class="ghost">Setmana següent →</button>
+        </div>
+        <table id="weekGrid" class="week-grid"></table>
       </div>
 
-      <!-- Setmanal -->
-      <section id="subtab-setmanal" class="card">
-        <div style="display:flex; gap:8px; align-items:center; margin-bottom:10px;">
-          <button class="btn ghost" id="prevWeek">← Setmana anterior</button>
-          <button class="btn ghost" id="nextWeek">Setmana següent →</button>
-          <span class="muted" id="weekRange"></span>
+      <!-- Subpestanya anual -->
+      <div id="subtab-anual" class="card hidden">
+        <div class="year-nav">
+          <button id="prevYear" class="ghost">← Any anterior</button>
+          <span id="yearLabel" class="badge"></span>
+          <button id="nextYear" class="ghost">Any següent →</button>
         </div>
-        <table class="week-grid" id="weekGrid"></table>
-      </section>
-
-      <!-- Anual -->
-      <section id="subtab-anual" class="card hidden">
-        <div style="display:flex; gap:8px; align-items:center; margin-bottom:10px;">
-          <button class="btn ghost" id="prevYear">← Any anterior</button>
-          <strong id="yearLabel" style="font-size:18px;"></strong>
-          <button class="btn ghost" id="nextYear">Any següent →</button>
-        </div>
-        <div class="year-grid" id="yearGrid"></div>
-      </section>
+        <div id="yearGrid" class="year-grid"></div>
+      </div>
     </section>
 
-    <!-- LLIÇONARI -->
+    <!-- Contingut: LLICONARI -->
     <section id="tab-lliconari" class="hidden">
-      <section class="card">
-        <h2>Nova lliçó</h2>
-        <div class="row cols-2">
-          <input id="lcurs" placeholder="Curs (p. ex. 5è)" />
-          <input id="lassignatura" placeholder="Assignatura (p. ex. Música)" />
+      <div class="card">
+        <h2>Nou lliçó</h2>
+        <div class="form-grid">
+          <input id="lcurs" placeholder="Curs (5è...)" />
+          <input id="lassignatura" placeholder="Assignatura" />
+          <input id="ltitol" placeholder="Títol de la lliçó" />
+          <textarea id="ldescripcio" placeholder="Descripció"></textarea>
+          <input id="lrecursos" placeholder="Recursos (separats per comes)" />
+          <button id="saveLlico" class="primary">Desar lliçó</button>
         </div>
-        <input id="ltitol" placeholder="Títol de la lliçó" style="margin-top:8px;" />
-        <textarea id="ldescripcio" rows="5" placeholder="Descripció"></textarea>
-        <input id="lrecursos" placeholder="Recursos (separats per coma)" />
-        <div class="actions" style="margin-top:8px;">
-          <button class="btn primary" id="saveLlico">Desar lliçó</button>
-        </div>
-      </section>
+      </div>
 
-      <section class="card">
-        <h2>Lliçonari</h2>
+      <div class="card">
+        <h2>Llistat de lliçons</h2>
         <div class="filters">
-          <input id="fCurs" placeholder="Filtra curs (opcional)" />
-          <input id="fAssignatura" placeholder="Filtra assignatura (opcional)" />
-          <button class="btn ghost" id="filtraLlicons">Aplicar filtres</button>
-          <button class="btn ghost" id="netejaFiltres">Neteja</button>
-          <button class="btn" id="imprimirLlicons">🖨️ Imprimir</button>
-          <button class="btn" id="descarregarCSV">⬇️ Descarregar CSV</button>
+          <input id="fCurs" placeholder="Filtra per curs" />
+          <input id="fAssignatura" placeholder="Filtra per assignatura" />
+          <button id="filtraLlicons" class="ghost">Aplicar</button>
+          <button id="netejaFiltres" class="ghost">Netejar</button>
+          <button id="imprimirLlicons" class="ghost">🖨️</button>
+          <button id="descarregarCSV" class="ghost">⬇️</button>
         </div>
         <div id="llistaLlicons" class="list"></div>
-      </section>
+      </div>
     </section>
-  </main>
 
-  <footer class="container muted">Programeta — v0.1 (Firestore)</footer>
+    <footer class="app-footer">
+      Programeta — v0.2 <span class="muted">(Firestore)</span>
+    </footer>
+  </div>
 
-  <!-- Editor franja horària -->
-  <dialog id="franjaDlg">
-    <div class="modal">
-      <h3 id="dlgTitle">Editar franja</h3>
-      <div class="row cols-2">
-        <input id="fdia" readonly />
-        <input id="fhora" readonly />
-      </div>
-      <div class="row cols-2">
-        <input id="fcurs" placeholder="Curs (p. ex. 5è)" />
-        <input id="fassignatura" placeholder="Assignatura (p. ex. Música)" />
-      </div>
-      <textarea id="factivitat" rows="4" placeholder="Activitat (p. ex. Percussió corporal)"></textarea>
-      <div class="row">
-        <label for="ftipus">Tipus</label>
-        <select id="ftipus">
-          <option value="ocasional">Ocasional (només aquesta setmana)</option>
-          <option value="permanent">Permanent (es repeteix cada setmana)</option>
-        </select>
-      </div>
-      <div class="actions">
-        <button class="btn danger" id="delFranja">Eliminar</button>
-        <button class="btn ghost" id="cancelFranja">Cancel·lar</button>
-        <button class="btn primary" id="saveFranja">Desar</button>
-      </div>
+  <!-- Modal franja horària -->
+  <dialog id="franjaDlg" class="modal">
+    <h3>Editar franja</h3>
+    <div class="form-grid">
+      <input id="fdia" disabled />
+      <input id="fhora" disabled />
+      <input id="fcurs" placeholder="Curs" />
+      <input id="fassignatura" placeholder="Assignatura" />
+      <input id="factivitat" placeholder="Activitat" />
+      <select id="ftipus">
+        <option value="ocasional">Ocasional</option>
+        <option value="permanent">Permanent</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button id="delFranja" class="danger">Eliminar</button>
+      <button id="cancelFranja" class="ghost">Cancel·lar</button>
+      <button id="saveFranja" class="primary">Desar</button>
     </div>
   </dialog>
+
+  <script type="module" src="js/firebase.js"></script>
+  <script type="module" src="js/app.firebase.js"></script>
 </body>
 </html>
