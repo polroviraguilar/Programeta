@@ -215,64 +215,58 @@ yearGrid.addEventListener('click', e=>{
 // ──────────────────────────────────────────
 // Lliçonari
 // ──────────────────────────────────────────
-const lcurs = document.getElementById('lcurs');
-const lassignatura = document.getElementById('lassignatura');
-const ltitol = document.getElementById('ltitol');
-const ldescripcio = document.getElementById('ldescripcio');
-const lrecursos = document.getElementById('lrecursos');
 const llistaLlicons = document.getElementById('llistaLlicons');
 
-document.getElementById('saveLlico').addEventListener('click', async ()=>{
-  const data = {
-    curs: lcurs.value.trim(),
-    assignatura: lassignatura.value.trim(),
-    titol: ltitol.value.trim(),
-    descripcio: ldescripcio.value.trim(),
-    recursos: lrecursos.value.split(',').map(s=>s.trim()).filter(Boolean)
-  };
-  if (!data.titol) return;
-  await addLlico(currentUser.uid, data);
-  lcurs.value=lassignatura.value=ltitol.value=ldescripcio.value=lrecursos.value='';
-  loadLlicons();
+document.getElementById('filtraLlicons').addEventListener('click', renderLlicons);
+document.getElementById('netejaFiltres').addEventListener('click', ()=>{
+  document.getElementById('fCurs').value = '';
+  document.getElementById('fAssignatura').value = '';
+  renderLlicons();
 });
 
-document.getElementById('filtraLlicons').addEventListener('click', loadLlicons);
-document.getElementById('netejaFiltres').addEventListener('click', ()=>{
-  document.getElementById('fCurs').value='';
-  document.getElementById('fAssignatura').value='';
-  loadLlicons();
-});
 document.getElementById('imprimirLlicons').addEventListener('click', ()=> window.print());
-document.getElementById('descarregarCSV').addEventListener('click', async ()=>{
-  const rows = await listLlicons(currentUser.uid, { curs: document.getElementById('fCurs').value.trim()||undefined, assignatura: document.getElementById('fAssignatura').value.trim()||undefined });
+document.getElementById('descarregarCSV').addEventListener('click', ()=>{
+  const fc = document.getElementById('fCurs').value.trim();
+  const fa = document.getElementById('fAssignatura').value.trim();
+  const rows = franges.filter(f => (!fc || f.curs === fc) && (!fa || f.assignatura === fa));
   const csv = toCSV(rows);
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
-  const a = document.createElement('a'); a.href=url; a.download='llicons.csv'; a.click();
+  const a = document.createElement('a');
+  a.href = url; a.download = 'llicons.csv'; a.click();
   URL.revokeObjectURL(url);
 });
 
-async function loadLlicons(){
+function renderLlicons() {
   const fc = document.getElementById('fCurs').value.trim();
   const fa = document.getElementById('fAssignatura').value.trim();
-  const rows = await listLlicons(currentUser.uid, { curs: fc||undefined, assignatura: fa||undefined });
-  if (!rows.length){ llistaLlicons.innerHTML='<p class="muted">Sense lliçons.</p>'; return; }
-  llistaLlicons.innerHTML = rows.map(r=>`
+
+  const rows = franges.filter(f =>
+    (!fc || f.curs === fc) &&
+    (!fa || f.assignatura === fa)
+  );
+
+  if (!rows.length) {
+    llistaLlicons.innerHTML = '<p class="muted">Sense resultats.</p>';
+    return;
+  }
+
+  llistaLlicons.innerHTML = rows.map(r => `
     <div class="item">
-      <div class="item-head"><h3>${escapeHtml(r.titol)}</h3></div>
+      <div class="item-head"><h3>${escapeHtml(r.activitat)}</h3></div>
       <div class="muted">${escapeHtml(r.curs)} — ${escapeHtml(r.assignatura)}</div>
-      <div>${nl2br(escapeHtml(r.descripcio))}</div>
-      ${(r.recursos&&r.recursos.length)?`<div class="meta">Recursos: ${r.recursos.map(escapeHtml).join(', ')}</div>`:''}
+      <div class="meta">${escapeHtml(r.dia)} ${escapeHtml(r.hora)} · Setmana ${r.week} / ${r.year}</div>
+      <div class="meta">${r.tipus === 'permanent' ? 'Permanent' : 'Ocasional'}</div>
     </div>
   `).join('');
 }
 
 function toCSV(rows){
-  const header = ['curs','assignatura','titol','descripcio','recursos'];
-  const esc = (s='')=> '"'+String(s).replace(/"/g,'""')+'"';
+  const header = ['curs','assignatura','activitat','dia','hora','setmana','any','tipus'];
+  const esc = (s='')=> `"${String(s).replace(/"/g,'""')}"`;
   const lines = [header.join(',')];
   for (const r of rows){
-    lines.push([esc(r.curs), esc(r.assignatura), esc(r.titol), esc(r.descripcio), esc((r.recursos||[]).join('|'))].join(','));
+    lines.push([esc(r.curs), esc(r.assignatura), esc(r.activitat), esc(r.dia), esc(r.hora), r.week, r.year, r.tipus].join(','));
   }
   return lines.join('\n');
 }
@@ -284,5 +278,5 @@ ensureAuth().then(user=>{
   currentUser = user;
   renderYear();
   loadWeek();
-  loadLlicons();
+  renderLlicons();
 });
