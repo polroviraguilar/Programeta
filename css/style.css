@@ -62,6 +62,7 @@ a{color:inherit}
   background:transparent; text-align:left;
   font-weight:600; cursor:pointer;
   transition:background .2s;
+  border:none;
 }
 .side-link:hover{background:#ece7da;}
 .side-link.active{background:var(--accent); color:var(--accent-ink);}
