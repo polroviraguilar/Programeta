@@ -59,23 +59,57 @@ function escapeHtml(s = '') {
 function nl2br(s=''){ return s.replace(/\n/g,'<br/>'); }
 
 // ──────────────────────────────────────────
-// Navegació pestanyes
+// Navegació (adaptada a menú lateral + subpestanyes)
 // ──────────────────────────────────────────
-document.getElementById('mainTabs').addEventListener('click', e=>{
-  const btn = e.target.closest('button.tab'); if(!btn) return;
-  document.querySelectorAll('#mainTabs .tab').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('tab-horari').classList.toggle('hidden', btn.dataset.tab!=='horari');
-  document.getElementById('tab-lliconari').classList.toggle('hidden', btn.dataset.tab!=='lliconari');
-});
 
-document.getElementById('horariTabs').addEventListener('click', e=>{
-  const btn = e.target.closest('button.tab'); if(!btn) return;
-  document.querySelectorAll('#horariTabs .tab').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('subtab-setmanal').classList.toggle('hidden', btn.dataset.subtab!=='setmanal');
-  document.getElementById('subtab-anual').classList.toggle('hidden', btn.dataset.subtab!=='anual');
-});
+// Subcapçalera desplegable (botó de la topbar)
+const toggleSub = document.getElementById('toggleSubheader');
+if (toggleSub) {
+  toggleSub.addEventListener('click', () => {
+    const sh = document.getElementById('subheader');
+    if (sh) sh.classList.toggle('hidden');
+  });
+}
+
+// Plegar/desplegar menú lateral (hamburguesa a la topbar)
+const toggleSidebar = document.getElementById('toggleSidebar');
+if (toggleSidebar) {
+  toggleSidebar.addEventListener('click', () => {
+    document.body.classList.toggle('sidebar-collapsed');
+  });
+}
+
+// Menú lateral: Horari / Lliçonari
+const sideNav = document.querySelector('.side-nav');
+if (sideNav) {
+  sideNav.addEventListener('click', (e) => {
+    const btn = e.target.closest('.side-link');
+    if (!btn) return;
+
+    sideNav.querySelectorAll('.side-link').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const tab = btn.dataset.tab;
+    document.getElementById('tab-horari')?.classList.toggle('hidden', tab !== 'horari');
+    document.getElementById('tab-lliconari')?.classList.toggle('hidden', tab !== 'lliconari');
+  });
+}
+
+// Subpestanyes de l'Horari: Setmanal / Anual
+const horariTabs = document.getElementById('horariTabs');
+if (horariTabs) {
+  horariTabs.addEventListener('click', (e) => {
+    const btn = e.target.closest('button.tab'); 
+    if (!btn) return;
+
+    horariTabs.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const sub = btn.dataset.subtab;
+    document.getElementById('subtab-setmanal')?.classList.toggle('hidden', sub !== 'setmanal');
+    document.getElementById('subtab-anual')?.classList.toggle('hidden', sub !== 'anual');
+  });
+}
 
 // ──────────────────────────────────────────
 // Vista setmanal
