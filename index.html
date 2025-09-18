@@ -1,44 +1,86 @@
 <!DOCTYPE html>
-<html lang="ca">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Programeta 📖</title>
-<link rel="stylesheet" href="css/style.css" />
-</head>
-<body>
-<header class="container">
-<h1>Programeta 📖</h1>
-<p>La teva llibreta docent digital</p>
-</header>
+<table class="week-grid" id="weekGrid"></table>
+</section>
 
 
-<main class="container">
-<section class="card">
-<h2>Nova unitat</h2>
-<form id="unitatForm">
-<div class="grid">
-<input id="titol" type="text" placeholder="Títol de la unitat" required />
-<input id="assignatura" type="text" placeholder="Assignatura (opcional)" />
-<input id="data" type="date" />
+<!-- Anual -->
+<section id="subtab-anual" class="card hidden">
+<div style="display:flex; gap:8px; align-items:center; margin-bottom:10px;">
+<button class="btn ghost" id="prevYear">← Any anterior</button>
+<strong id="yearLabel" style="font-size:18px;"></strong>
+<button class="btn ghost" id="nextYear">Any següent →</button>
 </div>
-<textarea id="contingut" rows="6" placeholder="Descripció / Activitats"></textarea>
-<button type="submit">Desar</button>
-</form>
+<div class="year-grid" id="yearGrid"></div>
+</section>
+</section>
+
+
+<!-- LLIÇONARI -->
+<section id="tab-lliconari" class="hidden">
+<section class="card">
+<h2>Nova lliçó</h2>
+<div class="row cols-2">
+<input id="lcurs" placeholder="Curs (p. ex. 5è)" />
+<input id="lassignatura" placeholder="Assignatura (p. ex. Música)" />
+</div>
+<input id="ltitol" placeholder="Títol de la lliçó" style="margin-top:8px;" />
+<textarea id="ldescripcio" rows="5" placeholder="Descripció"></textarea>
+<input id="lrecursos" placeholder="Recursos (separats per coma)" />
+<div class="actions" style="margin-top:8px;">
+<button class="btn primary" id="saveLlico">Desar lliçó</button>
+</div>
 </section>
 
 
 <section class="card">
-<h2>Unitats desades</h2>
-<div id="llistaUnitats" class="list"></div>
+<h2>Lliçonari</h2>
+<div class="filters">
+<input id="fCurs" placeholder="Filtra curs (opcional)" />
+<input id="fAssignatura" placeholder="Filtra assignatura (opcional)" />
+<button class="btn ghost" id="filtraLlicons">Aplicar filtres</button>
+<button class="btn ghost" id="netejaFiltres">Neteja</button>
+<button class="btn" id="imprimirLlicons">🖨️ Imprimir</button>
+<button class="btn" id="descarregarCSV">⬇️ Descarregar CSV</button>
+</div>
+<div id="llistaLlicons" class="list"></div>
+</section>
 </section>
 </main>
 
 
-<footer class="container muted">Programeta — Firestore</footer>
+<footer class="container muted">Programeta — v0.1 (Firestore)</footer>
 
 
-<!-- Carreguem la lògica com mòduls -->
+<!-- Editor franja horària -->
+<dialog id="franjaDlg">
+<div class="modal">
+<h3 id="dlgTitle">Editar franja</h3>
+<div class="row cols-2">
+<input id="fdia" readonly />
+<input id="fhora" readonly />
+</div>
+<div class="row cols-2">
+<input id="fcurs" placeholder="Curs (p. ex. 5è)" />
+<input id="fassignatura" placeholder="Assignatura (p. ex. Música)" />
+</div>
+<textarea id="factivitat" rows="4" placeholder="Activitat (p. ex. Percussió corporal)"></textarea>
+<div class="row">
+<label>Tipus</label>
+<select id="ftipus">
+<option value="ocasional">Ocasional (només aquesta setmana)</option>
+<option value="permanent">Permanent (es repeteix cada setmana)</option>
+</select>
+</div>
+<div class="actions">
+<button class="btn danger" id="delFranja">Eliminar</button>
+<button class="btn ghost" id="cancelFranja">Cancel·lar</button>
+<button class="btn primary" id="saveFranja">Desar</button>
+</div>
+</div>
+</dialog>
+
+
+<!-- JS (mòduls) -->
 <script type="module" src="js/firebase.js"></script>
 <script type="module" src="js/app.firebase.js"></script>
 </body>
