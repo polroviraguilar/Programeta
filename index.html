@@ -104,19 +104,48 @@
   <script type="module" src="js/firebase.js"></script>
   <script type="module" src="js/app.firebase.js"></script>
   <script>
-    // Subcapçalera desplegable
-    document.getElementById('toggleSubheader').addEventListener('click', ()=>{
-      document.getElementById('subheader').classList.toggle('hidden');
-    });
+  // Subcapçalera desplegable
+  document.getElementById('toggleSubheader').addEventListener('click', ()=>{
+    document.getElementById('subheader').classList.toggle('hidden');
+  });
 
-    // Menú lateral
-    document.querySelector('.side-nav').addEventListener('click', e=>{
-      const btn = e.target.closest('.side-link'); if(!btn) return;
-      document.querySelectorAll('.side-link').forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');
-      document.getElementById('tab-horari').classList.toggle('hidden', btn.dataset.tab!=='horari');
-      document.getElementById('tab-lliconari').classList.toggle('hidden', btn.dataset.tab!=='lliconari');
-    });
-  </script>
+  // Menú lateral (canvi de secció)
+  document.querySelector('.side-nav').addEventListener('click', e=>{
+    const btn = e.target.closest('.side-link'); if(!btn) return;
+    document.querySelectorAll('.side-link').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-horari').classList.toggle('hidden', btn.dataset.tab!=='horari');
+    document.getElementById('tab-lliconari').classList.toggle('hidden', btn.dataset.tab!=='lliconari');
+  });
+
+  // 👉 Plegar/desplegar la sidebar
+  document.getElementById('toggleSidebar').addEventListener('click', ()=>{
+    document.body.classList.toggle('sidebar-collapsed');
+  });
+</script>
+
+  <!-- MODAL: Editor franja (requisit per al JS) -->
+<dialog id="franjaDlg" class="modal" aria-labelledby="dlg-title" aria-modal="true">
+  <h3 id="dlg-title">Editar franja</h3>
+
+  <div class="form-grid">
+    <input id="fdia" readonly />
+    <input id="fhora" readonly />
+    <input id="fcurs" placeholder="Curs (p. ex. 5è)" />
+    <input id="fassignatura" placeholder="Assignatura (p. ex. Música)" />
+    <textarea id="factivitat" rows="3" placeholder="Activitat"></textarea>
+    <select id="ftipus" title="Defineix si és esporàdica o permanent">
+      <option value="ocasional">Ocasional (només aquesta setmana)</option>
+      <option value="permanent">Permanent (cada setmana)</option>
+    </select>
+  </div>
+
+  <div class="modal__actions">
+    <button id="delFranja" class="btn danger" data-tooltip="Elimina la franja">Eliminar</button>
+    <div class="modal__spacer"></div>
+    <button id="cancelFranja" class="btn ghost">Cancel·lar</button>
+    <button id="saveFranja" class="btn primary" data-tooltip="Desa els canvis">Desar</button>
+  </div>
+</dialog>
 </body>
 </html>
