@@ -1,109 +1,173 @@
 <!DOCTYPE html>
 <html lang="ca">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Programeta 📖</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css" />
+  <meta name="color-scheme" content="light">
 </head>
 <body>
-  <div class="app-container">
-    <header class="app-header">
-      <h1>Programeta <span class="emoji">📖</span></h1>
-      <p class="subtitle">La teva llibreta docent digital</p>
-    </header>
+  <!-- Accessibilitat: salt ràpid al contingut -->
+  <a class="skip-link" href="#main">Salta al contingut</a>
 
+  <!-- CAPÇALERA -->
+  <header class="topbar" role="banner" aria-label="Capçalera de Programeta">
+    <div class="topbar__inner">
+      <div class="brand">
+        <span class="brand__logo" aria-hidden="true">📖</span>
+        <span class="brand__name">Programeta</span>
+      </div>
+      <div class="brand__tag muted">Llibreta docent digital</div>
+    </div>
+  </header>
+
+  <!-- SUBCAPÇALERA (ajuda breu, sempre visible i no intrusiva) -->
+  <section class="subheader" aria-label="Guia ràpida">
+    <div class="subheader__content">
+      <div class="callout">
+        <strong>Com funciona:</strong>
+        <ul>
+          <li><b>Horari · Setmanal</b>: clica una cel·la per <i>Afegir/Editar</i> una franja (ocasional o permanent).</li>
+          <li><b>Horari · Anual</b>: tria una setmana per navegar-hi ràpid.</li>
+          <li><b>Lliçonari</b>: crea lliçons i filtra per curs/assignatura; imprimeix o baixa CSV.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTINGUT -->
+  <main id="main" class="app" role="main">
     <!-- Pestanyes principals -->
-    <nav id="mainTabs" class="tabs">
-      <button class="tab active" data-tab="horari">Horari</button>
-      <button class="tab" data-tab="lliconari">Lliçonari</button>
+    <nav id="mainTabs" class="tabs" role="tablist" aria-label="Modes principals">
+      <button class="tab active" data-tab="horari" role="tab" aria-selected="true" title="Planifica per setmanes o per any">Horari</button>
+      <button class="tab" data-tab="lliconari" role="tab" aria-selected="false" title="Crea i filtra les teves lliçons">Lliçonari</button>
     </nav>
 
-    <!-- Contingut: HORARI -->
-    <section id="tab-horari">
-      <nav id="horariTabs" class="tabs sub-tabs">
-        <button class="tab active" data-subtab="setmanal">Setmanal</button>
-        <button class="tab" data-subtab="anual">Anual</button>
+    <!-- HORARI -->
+    <section id="tab-horari" aria-labelledby="tab-horari-label">
+      <h2 id="tab-horari-label" class="visually-hidden">Horari</h2>
+
+      <nav id="horariTabs" class="tabs sub-tabs" role="tablist" aria-label="Vistes d'horari">
+        <button class="tab active" data-subtab="setmanal" role="tab" aria-selected="true" title="Vista de dilluns a divendres per franges">Setmanal</button>
+        <button class="tab" data-subtab="anual" role="tab" aria-selected="false" title="Selector de setmanes de tot l'any">Anual</button>
+        <span class="tabs__hint muted">Consell: fes servir les fletxes o el selector d’any per moure’t ràpid.</span>
       </nav>
 
-      <!-- Subpestanya setmanal -->
-      <div id="subtab-setmanal" class="card">
-        <div class="week-nav">
-          <button id="prevWeek" class="ghost">← Setmana anterior</button>
-          <div>
-            <span id="weekLabel" class="badge"></span>
-            <span id="weekRange" class="muted"></span>
-          </div>
-          <button id="nextWeek" class="ghost">Setmana següent →</button>
+      <!-- Setmanal -->
+      <section id="subtab-setmanal" class="card" aria-labelledby="subtab-setmanal-title">
+        <div class="section-head">
+          <h3 id="subtab-setmanal-title">Planificació setmanal</h3>
+          <div class="badge" id="weekLabel" aria-live="polite">—</div>
         </div>
-        <table id="weekGrid" class="week-grid"></table>
-      </div>
 
-      <!-- Subpestanya anual -->
-      <div id="subtab-anual" class="card hidden">
-        <div class="year-nav">
-          <button id="prevYear" class="ghost">← Any anterior</button>
-          <span id="yearLabel" class="badge"></span>
-          <button id="nextYear" class="ghost">Any següent →</button>
+        <div class="toolbar">
+          <button class="btn ghost" id="prevWeek" data-tooltip="Anar a la setmana anterior">← Setmana anterior</button>
+          <span class="muted" id="weekRange">—</span>
+          <button class="btn ghost" id="nextWeek" data-tooltip="Anar a la setmana següent">Setmana següent →</button>
         </div>
-        <div id="yearGrid" class="year-grid"></div>
-      </div>
+
+        <div class="table-wrap">
+          <table id="weekGrid" class="week-grid" aria-label="Graella de la setmana"></table>
+        </div>
+
+        <p class="help muted">
+          ❔ Clica <b>Afegir</b> per crear una franja. Canvia <i>Tipus</i> a <b>Permanent</b> si es repeteix cada setmana.
+        </p>
+      </section>
+
+      <!-- Anual -->
+      <section id="subtab-anual" class="card hidden" aria-labelledby="subtab-anual-title">
+        <div class="section-head">
+          <h3 id="subtab-anual-title">Calendari anual</h3>
+          <div class="badge" id="yearLabel">—</div>
+        </div>
+
+        <div class="toolbar">
+          <button class="btn ghost" id="prevYear" data-tooltip="Any anterior">← Any anterior</button>
+          <div class="toolbar__spacer"></div>
+          <button class="btn ghost" id="nextYear" data-tooltip="Any següent">Any següent →</button>
+        </div>
+
+        <div id="yearGrid" class="year-grid" aria-label="Selector de setmanes"></div>
+
+        <p class="help muted">Clica una setmana (W01…W53) per obrir-la a la vista setmanal.</p>
+      </section>
     </section>
 
-    <!-- Contingut: LLICONARI -->
-    <section id="tab-lliconari" class="hidden">
-      <div class="card">
-        <h2>Nou lliçó</h2>
-        <div class="form-grid">
-          <input id="lcurs" placeholder="Curs (5è...)" />
-          <input id="lassignatura" placeholder="Assignatura" />
-          <input id="ltitol" placeholder="Títol de la lliçó" />
-          <textarea id="ldescripcio" placeholder="Descripció"></textarea>
-          <input id="lrecursos" placeholder="Recursos (separats per comes)" />
-          <button id="saveLlico" class="primary">Desar lliçó</button>
-        </div>
-      </div>
+    <!-- LLIÇONARI -->
+    <section id="tab-lliconari" class="hidden" aria-labelledby="tab-lliconari-label">
+      <h2 id="tab-lliconari-label" class="visually-hidden">Lliçonari</h2>
 
-      <div class="card">
-        <h2>Llistat de lliçons</h2>
+      <section class="card">
+        <div class="section-head">
+          <h3>Nova lliçó</h3>
+          <span class="muted">Omple els camps i prem “Desar”.</span>
+        </div>
+        <div class="form-grid">
+          <input id="lcurs" placeholder="Curs (p. ex. 5è)" />
+          <input id="lassignatura" placeholder="Assignatura (p. ex. Música)" />
+          <input id="ltitol" placeholder="Títol de la lliçó" />
+          <textarea id="ldescripcio" rows="4" placeholder="Descripció de la sessió"></textarea>
+          <input id="lrecursos" placeholder="Recursos (separats per comes)" />
+          <div class="actions">
+            <button id="saveLlico" class="btn primary" data-tooltip="Desa la lliçó a la teva biblioteca">Desar lliçó</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="section-head">
+          <h3>Lliçonari</h3>
+          <span class="muted">Filtra, imprimeix o descarrega.</span>
+        </div>
+
         <div class="filters">
           <input id="fCurs" placeholder="Filtra per curs" />
           <input id="fAssignatura" placeholder="Filtra per assignatura" />
-          <button id="filtraLlicons" class="ghost">Aplicar</button>
-          <button id="netejaFiltres" class="ghost">Netejar</button>
-          <button id="imprimirLlicons" class="ghost">🖨️</button>
-          <button id="descarregarCSV" class="ghost">⬇️</button>
+          <button id="filtraLlicons" class="btn ghost" data-tooltip="Aplica els filtres">Aplicar</button>
+          <button id="netejaFiltres" class="btn ghost" data-tooltip="Elimina filtres">Netejar</button>
+          <div class="filters__spacer"></div>
+          <button id="imprimirLlicons" class="btn ghost" data-tooltip="Imprimeix la llista">🖨️</button>
+          <button id="descarregarCSV" class="btn ghost" data-tooltip="Descarrega CSV">⬇️</button>
         </div>
-        <div id="llistaLlicons" class="list"></div>
-      </div>
+
+        <div id="llistaLlicons" class="list" aria-live="polite"></div>
+      </section>
     </section>
+  </main>
 
-    <footer class="app-footer">
-      Programeta — v0.2 <span class="muted">(Firestore)</span>
-    </footer>
-  </div>
+  <!-- PEU -->
+  <footer class="footer" role="contentinfo">
+    <div class="footer__inner">
+      <span>© Programeta</span>
+      <span class="muted">v0.2 · Firestore</span>
+    </div>
+  </footer>
 
-  <!-- Modal franja horària -->
-  <dialog id="franjaDlg" class="modal">
-    <h3>Editar franja</h3>
+  <!-- MODAL: Editor franja -->
+  <dialog id="franjaDlg" class="modal" aria-labelledby="dlg-title" aria-modal="true">
+    <h3 id="dlg-title">Editar franja</h3>
     <div class="form-grid">
-      <input id="fdia" disabled />
-      <input id="fhora" disabled />
+      <input id="fdia" readonly />
+      <input id="fhora" readonly />
       <input id="fcurs" placeholder="Curs" />
       <input id="fassignatura" placeholder="Assignatura" />
-      <input id="factivitat" placeholder="Activitat" />
-      <select id="ftipus">
-        <option value="ocasional">Ocasional</option>
-        <option value="permanent">Permanent</option>
+      <textarea id="factivitat" rows="3" placeholder="Activitat"></textarea>
+      <select id="ftipus" title="Defineix si és esporàdica o permanent">
+        <option value="ocasional">Ocasional (només aquesta setmana)</option>
+        <option value="permanent">Permanent (cada setmana)</option>
       </select>
     </div>
-    <div class="modal-actions">
-      <button id="delFranja" class="danger">Eliminar</button>
-      <button id="cancelFranja" class="ghost">Cancel·lar</button>
-      <button id="saveFranja" class="primary">Desar</button>
+    <div class="modal__actions">
+      <button id="delFranja" class="btn danger" data-tooltip="Elimina la franja">Eliminar</button>
+      <div class="modal__spacer"></div>
+      <button id="cancelFranja" class="btn ghost">Cancel·lar</button>
+      <button id="saveFranja" class="btn primary" data-tooltip="Desa els canvis">Desar</button>
     </div>
   </dialog>
 
+  <!-- JS (no toquem els IDs per no perdre funcionalitat) -->
   <script type="module" src="js/firebase.js"></script>
   <script type="module" src="js/app.firebase.js"></script>
 </body>
