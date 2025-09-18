@@ -184,6 +184,17 @@ body.sidebar-collapsed .content{
   padding-left: 20px; /* compensa quan està plegat */
 }
 
+.brand__img{
+  display:block;
+  height:28px;        /* pots pujar-ho a 30–34 si el logo ho demana */
+  width:auto;
+}
+
+/* si vols una alçada diferent en mòbil */
+@media (max-width: 720px){
+  .brand__img{ height:24px; }
+}
+
 /* ───────────────── Responsiu ───────────────── */
 @media (max-width: 720px){
   .layout{flex-direction:column}
