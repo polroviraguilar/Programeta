@@ -109,11 +109,17 @@
   <script type="module" src="js/firebase.js"></script>
   <script type="module" src="js/app.firebase.js"></script>
   <script>
-    // Subcapçalera desplegable
-    document.getElementById('toggleSubheader').addEventListener('click', ()=>{
-      document.getElementById('subheader').classList.toggle('hidden');
+    document.addEventListener('DOMContentLoaded', ()=>{
+      const toggle = document.getElementById('toggleSubheader');
+      const subheader = document.getElementById('subheader');
+      if (toggle && subheader) {
+        toggle.addEventListener('click', ()=>{
+          subheader.classList.toggle('hidden');
+        });
+      }
     });
   </script>
+
 
   <!-- MODAL: Editor franja -->
   <dialog id="franjaDlg" class="modal" aria-labelledby="dlg-title" aria-modal="true">
