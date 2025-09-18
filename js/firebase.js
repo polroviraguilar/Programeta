@@ -10,12 +10,12 @@ import {
 
 // 🔧 CONFIGURACIÓ: copia la teva de Firebase Console → Project settings → Web app
 const firebaseConfig = {
-  apiKey: "LA_TEVA_API_KEY",
-  authDomain: "EL_TEU_PROJECTE.firebaseapp.com",
-  projectId: "EL_TEU_PROJECTE",
-  storageBucket: "EL_TEU_PROJECTE.appspot.com",
-  messagingSenderId: "XXXXXXX",
-  appId: "1:XXXXXXX:web:XXXXXXXX"
+  apiKey: "AIzaSyCrDmpdYr9c55SR2ZbNsYVBzsgXxHM9h5k",
+  authDomain: "programeta-cc218.firebaseapp.com",
+  projectId: "programeta-cc218",
+  storageBucket: "programeta-cc218.firebasestorage.app",
+  messagingSenderId: "1004120651589",
+  appId: "1:1004120651589:web:9313cd2adf287f8c5e302c"
 };
 
 // Inicialització
