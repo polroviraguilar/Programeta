@@ -1,67 +1,77 @@
-import { ensureAuth, addUnit, listUnits, deleteUnit } from './firebase.js';
+// js/app.firebase.js
+// Canvia a subtab setmanal
+document.querySelector('#horariTabs [data-subtab="setmanal"]').click();
+loadWeek();
+});
 
 
-let currentUser = null;
+// ──────────────────────────────────────────────────────────────
+// Lliçonari
+// ──────────────────────────────────────────────────────────────
+const lcurs = document.getElementById('lcurs');
+const lassignatura = document.getElementById('lassignatura');
+const ltitol = document.getElementById('ltitol');
+const ldescripcio = document.getElementById('ldescripcio');
+const lrecursos = document.getElementById('lrecursos');
+const saveLlicoBtn = document.getElementById('saveLlico');
+const llistaLlicons = document.getElementById('llistaLlicons');
+const fCurs = document.getElementById('fCurs');
+const fAssignatura = document.getElementById('fAssignatura');
+const filtraBtn = document.getElementById('filtraLlicons');
+const netejaBtn = document.getElementById('netejaFiltres');
+const imprimirBtn = document.getElementById('imprimirLlicons');
+const descarregarBtn = document.getElementById('descarregarCSV');
 
 
-function escapeHtml(s) { return s.replace(/[&<>"]+/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
-function nl2br(s) { return s.replace(/\n/g, '<br/>'); }
+saveLlicoBtn.addEventListener('click', async ()=>{
+const recursos = (lrecursos.value||'').split(',').map(s=>s.trim());
+await addLlico(currentUser.uid, {
+curs: lcurs.value.trim(), assignatura: lassignatura.value.trim(), titol: ltitol.value.trim(), descripcio: ldescripcio.value.trim(), recursos
+});
+lcurs.value = lassignatura.value = ltitol.value = ldescripcio.value = lrecursos.value = '';
+await loadLlicons();
+});
 
 
-function render(unitats) {
-const wrap = document.getElementById('llistaUnitats');
-if (!wrap) return;
-if (!unitats.length) { wrap.innerHTML = '<p class="muted">Encara no hi ha unitats.</p>'; return; }
-wrap.innerHTML = unitats.map(u => `
-<div class="item" data-id="${u.id}">
-<div class="item-head">
-<h3>${escapeHtml(u.titol)}</h3>
-<div class="actions"><button data-action="delete">Eliminar</button></div>
-</div>
-<div class="muted">${u.assignatura ? `<span class="badge">${escapeHtml(u.assignatura)}</span>` : ''} ${u.data || ''}</div>
-<div>${nl2br(escapeHtml(u.contingut || ''))}</div>
+filtraBtn.addEventListener('click', loadLlicons);
+netejaBtn.addEventListener('click', ()=>{ fCurs.value=''; fAssignatura.value=''; loadLlicons(); });
+imprimirBtn.addEventListener('click', ()=> window.print());
+descarregarBtn.addEventListener('click', ()=> downloadCSV(currentLlicons));
+
+
+let currentLlicons = [];
+async function loadLlicons(){
+currentLlicons = await listLlicons(currentUser.uid, { curs: fCurs.value.trim() || undefined, assignatura: fAssignatura.value.trim() || undefined });
+if (!currentLlicons.length){ llistaLlicons.innerHTML = '<p class="muted">No hi ha lliçons.</p>'; return; }
+llistaLlicons.innerHTML = currentLlicons.map(l=>`
+<div class="item">
+<div class="item-head"><h3>${escapeHtml(l.titol||'')}</h3><span class="badge">${escapeHtml(l.curs||'')} · ${escapeHtml(l.assignatura||'')}</span></div>
+<div class="muted">Recursos: ${(l.recursos||[]).map(r=>`<code>${escapeHtml(r)}</code>`).join(', ')}</div>
+<div>${escapeHtml(l.descripcio||'')}</div>
 </div>
 `).join('');
 }
 
 
-async function refresh() {
-const unitats = await listUnits(currentUser.uid);
-render(unitats);
+function downloadCSV(rows){
+if(!rows?.length) return;
+const headers = ['curs','assignatura','titol','descripcio','recursos'];
+const csv = [headers.join(';')].concat(rows.map(r=> headers.map(h => escapeCSV(Array.isArray(r[h])? r[h].join('|') : (r[h]||'')).replace(/
+/g,' ')).join(';'))).join('
+');
+const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+const url = URL.createObjectURL(blob);
+const a = document.createElement('a'); a.href = url; a.download = 'llicons.csv'; a.click(); URL.revokeObjectURL(url);
 }
+function escapeCSV(s){ return String(s).includes(';') || String(s).includes('"') ? '"'+String(s).replace(/"/g,'""')+'"' : String(s); }
 
 
-async function onSubmit(e) {
-e.preventDefault();
-const titol = document.getElementById('titol').value.trim();
-const assignatura = document.getElementById('assignatura').value.trim();
-const data = document.getElementById('data').value;
-const contingut = document.getElementById('contingut').value.trim();
-if (!titol) return;
-await addUnit(currentUser.uid, { titol, assignatura, data, contingut });
-(e.target).reset();
-await refresh();
-}
-
-
-function onListClick(e) {
-const btn = e.target.closest('button');
-if (!btn) return;
-const item = e.target.closest('.item');
-if (!item) return;
-const id = item.getAttribute('data-id');
-if (btn.dataset.action === 'delete') {
-deleteUnit(currentUser.uid, id).then(refresh);
-}
-}
-
-
-// Init
-ensureAuth().then(async (user) => {
-currentUser = user;
-await refresh();
-});
-
-
-document.getElementById('unitatForm')?.addEventListener('submit', onSubmit);
-document.getElementById('llistaUnitats')?.addEventListener('click', onListClick);
+// ──────────────────────────────────────────────────────────────
+// INIT
+// ──────────────────────────────────────────────────────────────
+(async function init(){
+currentUser = await ensureAuth();
+renderYear();
+await loadWeek();
+await loadLlicons();
+})();
