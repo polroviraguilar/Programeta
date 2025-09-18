@@ -1,198 +1,178 @@
-:root {
-  --accent: #f6d365; /* groc pastel daurat */
-  --accent-dark: #e3b84a;
-  --bg: #f9f9f7;
-  --surface: #fff;
-  --text: #222;
-  --muted: #6b7280;
-  --primary: #4f46e5;
-  --danger: #ef4444;
-  --radius: 12px;
-  --shadow: 0 4px 12px rgba(0,0,0,.05);
+/* ───────────────── Paleta (inspirada en Wada – groc pastel com a accent) ──────────────── */
+:root{
+  --accent: #f6d365;         /* groc pastel daurat (accent) */
+  --accent-ink: #3a2f12;     /* text damunt accent */
+  --accent-600:#e7bf4f;
+
+  --bg: #f8f7f4;             /* blanc càlid */
+  --surface:#ffffff;          /* targetes */
+  --ink:#222222;             /* text principal */
+  --muted:#6b7280;           /* text secundari */
+
+  --primary:#4f46e5;         /* destacat alternatiu (accions principals) */
+  --danger:#ef4444;
+
+  --radius:14px;
+  --shadow: 0 8px 24px rgba(0,0,0,.06);
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  font-family: 'Inter', system-ui, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  line-height: 1.5;
+/* ───────────────── Reset & base ───────────────── */
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Inter", sans-serif;
+  color:var(--ink);
+  background:linear-gradient(180deg, #fbfbf9, var(--bg));
+  line-height:1.55;
+}
+a{color:inherit}
+.visually-hidden{position:absolute!important;width:1px;height:1px;margin:-1px;border:0;padding:0;clip:rect(0 0 0 0);overflow:hidden}
+.muted{color:var(--muted)}
+.hidden{display:none!important}
+
+/* Focus accessible */
+:focus-visible{outline:3px solid var(--accent); outline-offset:2px}
+
+/* Salt al contingut */
+.skip-link{
+  position:absolute; left:-9999px; top:auto;
+  background:var(--accent); color:var(--accent-ink);
+  padding:8px 12px; border-radius:999px;
+}
+.skip-link:focus{left:12px; top:12px; z-index:1000}
+
+/* ───────────────── Layout ───────────────── */
+.topbar{
+  position:sticky; top:0; z-index:50;
+  background:rgba(255,255,255,.8); backdrop-filter:saturate(180%) blur(10px);
+  border-bottom:1px solid #eee;
+}
+.topbar__inner{
+  max-width:1100px; margin:0 auto; padding:14px 20px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.brand{display:flex; align-items:center; gap:10px}
+.brand__logo{font-size:24px}
+.brand__name{
+  font-weight:800; letter-spacing:.2px; font-size:20px;
+  padding:4px 10px; border-radius:10px;
+  background:var(--accent); color:var(--accent-ink);
+}
+.brand__tag{font-size:13px}
+
+.subheader{
+  border-top:4px solid var(--accent);
+  background:linear-gradient(90deg, #fff 0%, #fff7e6 100%);
+}
+.subheader__content{
+  max-width:1100px; margin:0 auto; padding:12px 20px;
+}
+.callout{
+  background:#fff; border:1px solid #f0e7c7; border-left:6px solid var(--accent);
+  border-radius:12px; padding:10px 14px; box-shadow:var(--shadow);
+}
+.callout ul{margin:6px 0 0 18px; padding:0}
+.callout li{margin:4px 0}
+
+.app{
+  max-width:1100px; margin:0 auto; padding:20px;
 }
 
-.app-container {
-  max-width: 1100px;
-  margin: auto;
-  padding: 24px;
+/* ───────────────── Tabs ───────────────── */
+.tabs{display:flex; gap:10px; align-items:center; margin:16px 0}
+.tabs__hint{margin-left:auto;}
+.tab{
+  border:1px solid #e6e6e6; background:#fff; color:#333;
+  padding:8px 14px; border-radius:999px; cursor:pointer; transition:.2s;
+  box-shadow:var(--shadow);
+}
+.tab:hover{transform:translateY(-1px)}
+.tab.active{background:var(--accent); border-color:var(--accent-600); color:var(--accent-ink); font-weight:700}
+.sub-tabs{margin-top:6px}
+
+/* ───────────────── Cards & sections ───────────────── */
+.card{
+  background:var(--surface); border-radius:var(--radius);
+  box-shadow:var(--shadow); padding:18px; margin-top:12px;
+}
+.section-head{display:flex; align-items:center; gap:10px; margin-bottom:10px}
+.badge{background:var(--accent); color:var(--accent-ink); padding:3px 10px; border-radius:999px; font-weight:600; font-size:13px}
+
+.toolbar{display:flex; align-items:center; gap:10px; margin:8px 0 12px}
+.toolbar__spacer{flex:1}
+.table-wrap{overflow:auto; border-radius:12px; border:1px solid #eee}
+
+/* ───────────────── Botons ───────────────── */
+.btn{
+  border:0; border-radius:12px; padding:8px 14px; font-weight:600; cursor:pointer;
+  background:#f4f4f7; color:#222; transition:transform .1s, filter .2s;
+}
+.btn:hover{transform:translateY(-1px)}
+.btn.primary{background:var(--primary); color:#fff}
+.btn.ghost{background:#f2f3f6}
+.btn.danger{background:var(--danger); color:#fff}
+
+/* Tooltips (sense JS) */
+[data-tooltip]{position:relative}
+[data-tooltip]:hover::after{
+  content:attr(data-tooltip);
+  position:absolute; bottom:calc(100% + 6px); left:50%; transform:translateX(-50%);
+  background:#111; color:#fff; font-size:12px; padding:6px 8px; border-radius:8px; white-space:nowrap;
+  box-shadow:0 6px 18px rgba(0,0,0,.15);
 }
 
-.app-header {
-  text-align: center;
-  margin-bottom: 20px;
+/* ───────────────── Taula setmanal ───────────────── */
+.week-grid{width:100%; border-collapse:separate; border-spacing:0}
+.week-grid th, .week-grid td{border:1px solid #eee; padding:10px; vertical-align:top}
+.week-grid th{background:#fafafa; font-weight:700}
+.cell{min-height:72px; position:relative; text-align:left}
+.cell .edit{
+  display:inline-block; margin-bottom:6px; font-size:12px;
+  background:var(--accent); color:var(--accent-ink); border-radius:8px; padding:4px 8px;
 }
-.app-header h1 {
-  font-size: 2rem;
-  font-weight: 700;
-}
-.app-header .subtitle {
-  color: var(--muted);
-}
+.cell .meta{color:var(--muted); font-size:12px; margin-top:4px}
+.cell .act{display:inline-block; background:#eef2ff; border-radius:10px; padding:6px 8px}
 
-.app-footer {
-  text-align: center;
-  margin-top: 40px;
-  color: var(--muted);
-  font-size: 14px;
+/* ───────────────── Selector anual ───────────────── */
+.year-grid{
+  display:grid; grid-template-columns:repeat(auto-fill, minmax(64px,1fr)); gap:8px;
 }
+.year-grid .wk{
+  background:#f2f3f6; border-radius:12px; padding:10px 0; text-align:center; font-weight:600; cursor:pointer; transition:.2s;
+  box-shadow:var(--shadow);
+}
+.year-grid .wk:hover{transform:translateY(-1px)}
+.year-grid .wk.active{background:var(--accent); color:var(--accent-ink)}
 
-/* Pestanyes */
-.tabs {
-  display: flex;
-  gap: 10px;
-  margin: 12px 0;
+/* ───────────────── Formularis ───────────────── */
+.form-grid{display:grid; grid-template-columns:repeat(12,1fr); gap:10px}
+.form-grid input, .form-grid textarea, .form-grid select{
+  grid-column:span 12; padding:10px; border:1px solid #ddd; border-radius:12px; background:#fff
 }
-.tabs .tab {
-  padding: 8px 16px;
-  border-radius: var(--radius);
-  background: var(--surface);
-  border: 1px solid #ddd;
-  cursor: pointer;
-  transition: all .2s ease;
-}
-.tabs .tab.active {
-  background: var(--accent);
-  border-color: var(--accent-dark);
-  font-weight: 600;
-}
-.tabs .tab:hover {
-  filter: brightness(0.98);
-}
+.form-grid textarea{min-height:96px}
+.actions{display:flex; gap:8px; justify-content:flex-end}
+.filters{display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:10px}
+.filters__spacer{flex:1}
+.list{display:grid; gap:10px}
+.item{background:#fafafa; border:1px solid #eee; border-radius:12px; padding:12px}
 
-.card {
-  background: var(--surface);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 20px;
-  margin-top: 12px;
+/* ───────────────── Modal ───────────────── */
+.modal{
+  border:0; border-radius:16px; padding:18px; box-shadow:var(--shadow); max-width:560px; width:90%;
 }
+.modal::backdrop{background:rgba(0,0,0,.35)}
+.modal__actions{display:flex; align-items:center; gap:10px; margin-top:12px}
+.modal__spacer{flex:1}
 
-button {
-  cursor: pointer;
-  border: none;
-  border-radius: var(--radius);
-  padding: 8px 14px;
-  font-weight: 500;
-  transition: background .2s ease, transform .1s ease;
+/* ───────────────── Peu ───────────────── */
+.footer{
+  margin-top:32px; border-top:1px solid #eee; background:#fff;
 }
-button.primary {
-  background: var(--primary);
-  color: #fff;
-}
-button.ghost {
-  background: #f3f4f6;
-  color: var(--text);
-}
-button.danger {
-  background: var(--danger);
-  color: #fff;
-}
-button:hover { transform: translateY(-1px); }
+.footer__inner{max-width:1100px; margin:0 auto; padding:14px 20px; display:flex; gap:10px; align-items:center; justify-content:space-between}
 
-/* Setmanal */
-.week-nav, .year-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
+/* ───────────────── Responsiu ───────────────── */
+@media (max-width: 720px){
+  .tabs__hint{display:none}
+  .form-grid{grid-template-columns:1fr}
 }
-
-.week-grid {
-  width: 100%;
-  border-collapse: collapse;
-}
-.week-grid th, .week-grid td {
-  border: 1px solid #eee;
-  padding: 8px;
-  text-align: center;
-  font-size: 14px;
-}
-.week-grid th {
-  background: #fafafa;
-}
-
-.cell .edit {
-  margin-bottom: 4px;
-  font-size: 12px;
-  background: var(--accent);
-  border: none;
-  color: #333;
-}
-
-/* Anual */
-.year-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(60px,1fr));
-  gap: 6px;
-}
-.year-grid .wk {
-  padding: 6px;
-  background: #f3f4f6;
-  border-radius: var(--radius);
-  text-align: center;
-  cursor: pointer;
-  font-size: 12px;
-}
-.year-grid .wk.active {
-  background: var(--accent);
-  font-weight: 600;
-}
-
-/* Lliçonari */
-.form-grid {
-  display: grid;
-  gap: 10px;
-}
-.form-grid input, .form-grid textarea, .form-grid select {
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: var(--radius);
-}
-.filters {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-bottom: 12px;
-}
-.list .item {
-  padding: 12px;
-  border: 1px solid #eee;
-  border-radius: var(--radius);
-  background: #fafafa;
-  margin-bottom: 10px;
-}
-
-/* Modal */
-.modal {
-  border: none;
-  border-radius: var(--radius);
-  padding: 20px;
-  box-shadow: var(--shadow);
-}
-.modal::backdrop {
-  background: rgba(0,0,0,.3);
-}
-.modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 12px;
-}
-
-.badge {
-  background: var(--accent);
-  padding: 2px 8px;
-  border-radius: 999px;
-  font-size: 13px;
-}
-
-.muted { color: var(--muted); font-size: 13px; }
-.hidden { display: none !important; }
