@@ -47,7 +47,15 @@ function weeksInYear(year){
   const d = new Date(Date.UTC(year, 11, 31));
   const w = dateToISO(d).week; return w === 1 ? 52 : w;
 }
-function escapeHtml(s='') { return s.replace(/[&<>\"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',\"'\":'&#39;'}[c])); }
+function escapeHtml(s = '') {
+  return s.replace(/[&<>"']/g, c => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  }[c]));
+}
 function nl2br(s=''){ return s.replace(/\n/g,'<br/>'); }
 
 // ──────────────────────────────────────────
