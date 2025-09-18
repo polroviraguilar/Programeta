@@ -5,16 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Programeta</title>
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
 </head>
 <body>
   <!-- CAPÇALERA -->
   <header class="topbar">
-    <div class="topbar__inner">
-      <span class="brand__name">Programeta</span>
-      <button id="toggleSidebar" class="btn ghost small">☰ Menú</button>
-      <button id="toggleSubheader" class="btn ghost small">Ajuda ▼</button>      
-    </div>
-  </header>
+  <div class="topbar__inner">
+    <img src="assets/brand/logo-wordmark.svg"
+         alt="Programeta"
+         class="brand__img"
+         height="28"
+         loading="eager"
+         decoding="async">
+    <!--<button id="toggleSidebar" class="btn ghost small">☰ Menú</button>-->
+    <button id="toggleSubheader" class="btn ghost small">Ajuda ▼</button>
+  </div>
+</header>
 
   <!-- SUBCAPÇALERA desplegable -->
   <section id="subheader" class="subheader hidden">
