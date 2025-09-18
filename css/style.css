@@ -1,1 +1,18 @@
-
+:root { --maxw: 900px; --pad: 16px; --gap: 12px; }
+* { box-sizing: border-box; }
+body { font-family: system-ui, Arial, sans-serif; margin: 0; background: #f7f7fb; color: #222; }
+.container { max-width: var(--maxw); margin: 0 auto; padding: var(--pad); }
+header { text-align: center; }
+.card { background: #fff; padding: 16px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,.06); margin-bottom: 16px; }
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap); }
+input, textarea, button { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 10px; font-size: 14px; }
+button { cursor: pointer; border: 0; background: #4f46e5; color: #fff; font-weight: 600; }
+button:hover { filter: brightness(1.05); }
+.list { display: grid; gap: 10px; }
+.item { display: grid; gap: 8px; padding: 12px; border: 1px solid #eee; border-radius: 10px; background: #fafafe; }
+.item-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.badge { padding: 2px 8px; background: #eef2ff; border-radius: 999px; font-size: 12px; }
+.actions { display: flex; gap: 8px; }
+.actions button { background: #ef4444; }
+.muted { color: #666; font-size: 13px; }
+@media (max-width: 700px) { .grid { grid-template-columns: 1fr; } }
