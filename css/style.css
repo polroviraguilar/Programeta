@@ -186,6 +186,8 @@ body.sidebar-collapsed .content{
 }
 
 .brand__img{
+  position: absolute;
+  left: 60px;
   display:block;
   height:28px;        /* pots pujar-ho a 30–34 si el logo ho demana */
   width:auto;
