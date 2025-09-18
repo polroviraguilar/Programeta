@@ -169,6 +169,21 @@ a{color:inherit}
   display:flex; gap:10px; align-items:center; justify-content:space-between;
 }
 
+/* ───── Sidebar plegable ───── */
+.sidebar{
+  transition: transform .25s ease, width .25s ease, padding .25s ease;
+  will-change: transform;
+}
+body.sidebar-collapsed .sidebar{
+  transform: translateX(-110%);
+  width: 0;
+  padding: 0;
+  border: 0;
+}
+body.sidebar-collapsed .content{
+  padding-left: 20px; /* compensa quan està plegat */
+}
+
 /* ───────────────── Responsiu ───────────────── */
 @media (max-width: 720px){
   .layout{flex-direction:column}
