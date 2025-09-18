@@ -163,7 +163,7 @@ a{color:inherit}
 
 /* ───────────────── Peu ───────────────── */
 .footer{
-  margin-top:32px; border-top:1px solid #d1cbb9; background:#e8e3d6;
+  border-top:1px solid #d1cbb9; background:#e8e3d6;
 }
 .footer__inner{
   max-width:1100px; margin:0 auto; padding:14px 20px;
