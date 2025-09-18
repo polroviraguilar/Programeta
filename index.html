@@ -1,1 +1,43 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Programeta 📖</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<header class="container">
+<h1>Programeta 📖</h1>
+<p>La teva llibreta docent digital</p>
+</header>
 
+
+<main class="container">
+<section class="card">
+<h2>Nova unitat</h2>
+<form id="unitatForm">
+<div class="grid">
+<input id="titol" type="text" placeholder="Títol de la unitat" required />
+<input id="assignatura" type="text" placeholder="Assignatura (opcional)" />
+<input id="data" type="date" />
+</div>
+<textarea id="contingut" rows="6" placeholder="Descripció / Activitats"></textarea>
+<button type="submit">Desar</button>
+</form>
+</section>
+
+
+<section class="card">
+<h2>Unitats desades</h2>
+<div id="llistaUnitats" class="list"></div>
+</section>
+</main>
+
+
+<footer class="container muted">Programeta — MVP localStorage</footer>
+
+
+<script src="js/app.js"></script>
+</body>
+</html>
