@@ -30,6 +30,7 @@ a{color:inherit}
 
 /* ───────────────── Capçalera ───────────────── */
 .topbar{
+  height: 75px;
   position:sticky; top:0; z-index:50;
   background:var(--accent); color:var(--accent-ink);
   box-shadow:var(--shadow);
@@ -188,6 +189,7 @@ body.sidebar-collapsed .content{
 .brand__img{
   position: absolute;
   left: 60px;
+  top: 25px;
   display:block;
   height:28px;        /* pots pujar-ho a 30–34 si el logo ho demana */
   width:auto;
