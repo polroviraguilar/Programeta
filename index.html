@@ -1,20 +1,75 @@
 <!DOCTYPE html>
-<table class="week-grid" id="weekGrid"></table>
+<html lang="ca">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Programeta 📖</title>
+<link rel="stylesheet" href="css/style.css" />
+<style>
+/* Ajustos mínims per a la graella setmanal i anual */
+.tabs { display:flex; gap:8px; margin:12px 0; flex-wrap: wrap; }
+.tab { padding:8px 12px; border-radius:999px; border:1px solid #ddd; background:#fff; cursor:pointer; }
+.tab.active { background:#4f46e5; color:#fff; border-color:#4f46e5; }
+.hidden { display:none; }
+.week-grid { border-collapse: collapse; width:100%; background:#fff; border-radius:12px; overflow:hidden; }
+.week-grid th, .week-grid td { border:1px solid #eee; padding:10px; vertical-align: top; }
+.week-grid th { background:#fafafe; font-weight:600; }
+.cell { min-height:64px; position:relative; }
+.cell .act { font-size:13px; background:#eef2ff; padding:6px 8px; border-radius:8px; display:inline-block; margin-top:4px; }
+.cell .meta { color:#666; font-size:12px; margin-top:4px; }
+.cell .edit { position:absolute; top:6px; right:6px; font-size:12px; border:0; background:#e5e7eb; padding:4px 6px; border-radius:6px; cursor:pointer; }
+.cell .edit:hover { filter:brightness(0.95); }
+
+
+.year-grid { display:grid; grid-template-columns: repeat(13, 1fr); gap:6px; }
+.year-grid .wk { padding:8px; text-align:center; border:1px solid #eee; background:#fff; border-radius:8px; cursor:pointer; font-size:12px; }
+.year-grid .wk.active { background:#4f46e5; color:#fff; }
+
+
+dialog { border:0; border-radius:12px; padding:0; }
+.modal { padding:16px; min-width:320px; max-width:480px; }
+.modal h3 { margin:0 0 8px; }
+.row { display:grid; gap:8px; }
+.row.cols-2 { grid-template-columns: 1fr 1fr; }
+.row input, .row select, .row textarea { padding:10px; border:1px solid #ddd; border-radius:10px; font-size:14px; }
+.modal .actions { display:flex; gap:8px; justify-content:flex-end; margin-top:12px; }
+.btn { padding:10px 12px; border-radius:10px; border:0; cursor:pointer; }
+.btn.primary { background:#4f46e5; color:#fff; }
+.btn.ghost { background:#e5e7eb; }
+.btn.danger { background:#ef4444; color:#fff; }
+
+
+.filters { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px; }
+.print-note { font-size:12px; color:#666; margin-left:auto; }
+
+
+@media print {
+header, nav, .tabs, .actions, .filters, footer, dialog { display:none !important; }
+.card { box-shadow:none; border:0; }
+}
+</style>
+</head>
+<body>
+<header class="container">
+<h1>Programeta 📖</h1>
+<p>La teva llibreta docent digital</p>
+</header>
+
+
+<nav class="container tabs" id="mainTabs">
+<button class="tab active" data-tab="horari">Horari</button>
+<button class="tab" data-tab="lliconari">Lliçonari</button>
+</nav>
+
+
+<main class="container">
+<!-- HORARI -->
+<section id="tab-horari">
+<div class="tabs" id="horariTabs">
+<button class="tab active" data-subtab="setmanal">Setmanal</button>
+<button class="tab" data-subtab="anual">Anual</button>
 </section>
-
-
-<!-- Anual -->
-<section id="subtab-anual" class="card hidden">
-<div style="display:flex; gap:8px; align-items:center; margin-bottom:10px;">
-<button class="btn ghost" id="prevYear">← Any anterior</button>
-<strong id="yearLabel" style="font-size:18px;"></strong>
-<button class="btn ghost" id="nextYear">Any següent →</button>
-</div>
-<div class="year-grid" id="yearGrid"></div>
-</section>
-</section>
-
-
+  
 <!-- LLIÇONARI -->
 <section id="tab-lliconari" class="hidden">
 <section class="card">
