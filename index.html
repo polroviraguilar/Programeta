@@ -113,15 +113,6 @@
     document.getElementById('toggleSubheader').addEventListener('click', ()=>{
       document.getElementById('subheader').classList.toggle('hidden');
     });
-
-    // Menú lateral (canvi de secció)
-    document.querySelector('.side-nav').addEventListener('click', e=>{
-      const btn = e.target.closest('.side-link'); if(!btn) return;
-      document.querySelectorAll('.side-link').forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');
-      document.getElementById('tab-horari').classList.toggle('hidden', btn.dataset.tab!=='horari');
-      document.getElementById('tab-lliconari').classList.toggle('hidden', btn.dataset.tab!=='lliconari');
-    });
   </script>
 
   <!-- MODAL: Editor franja -->
