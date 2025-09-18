@@ -17,23 +17,8 @@
            height="28"
            loading="eager"
            decoding="async">
-      <button id="toggleSubheader" class="btn ghost small">Ajuda ▼</button>
     </div>
   </header>
-
-  <!-- SUBCAPÇALERA desplegable -->
-  <section id="subheader" class="subheader hidden">
-    <div class="subheader__content">
-      <div class="callout">
-        <strong>Com funciona:</strong>
-        <ul>
-          <li><b>Horari · Setmanal</b>: clica una cel·la per <i>Afegir/Editar</i> una franja.</li>
-          <li><b>Horari · Anual</b>: tria una setmana per navegar-hi ràpid.</li>
-          <li><b>Lliçonari</b>: filtra activitats per curs/assignatura.</li>
-        </ul>
-      </div>
-    </div>
-  </section>
 
   <div class="layout">
     <!-- MENÚ LATERAL -->
@@ -108,18 +93,6 @@
 
   <script type="module" src="js/firebase.js"></script>
   <script type="module" src="js/app.firebase.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', ()=>{
-      const toggle = document.getElementById('toggleSubheader');
-      const subheader = document.getElementById('subheader');
-      if (toggle && subheader) {
-        toggle.addEventListener('click', ()=>{
-          subheader.classList.toggle('hidden');
-        });
-      }
-    });
-  </script>
-
 
   <!-- MODAL: Editor franja -->
   <dialog id="franjaDlg" class="modal" aria-labelledby="dlg-title" aria-modal="true">
