@@ -309,14 +309,25 @@ function toCSV(rows){
   return lines.join('\n');
 }
 
+// --- LOGIN MODAL ---
+const loginDlg = document.getElementById("loginDlg");
+
+document.getElementById("openLogin")?.addEventListener("click", ()=>{
+  loginDlg.showModal();
+});
+
+document.getElementById("btnCloseLogin")?.addEventListener("click", ()=>{
+  loginDlg.close();
+});
+
 // Login
 document.getElementById("btnLogin")?.addEventListener("click", async ()=>{
   const email = document.getElementById("loginEmail").value;
   const pass = document.getElementById("loginPass").value;
   try {
     await login(email, pass);
-    alert("Sessió iniciada!");
-  } catch (e){
+    loginDlg.close();
+  } catch (e) {
     alert("Error login: " + e.message);
   }
 });
@@ -327,8 +338,8 @@ document.getElementById("btnRegister")?.addEventListener("click", async ()=>{
   const pass = document.getElementById("loginPass").value;
   try {
     await register(email, pass);
-    alert("Usuari registrat!");
-  } catch (e){
+    loginDlg.close();
+  } catch (e) {
     alert("Error registre: " + e.message);
   }
 });
@@ -336,6 +347,26 @@ document.getElementById("btnRegister")?.addEventListener("click", async ()=>{
 // Logout
 document.getElementById("btnLogout")?.addEventListener("click", async ()=>{
   await logout();
+});
+
+onAuthStateChanged(auth, (user)=>{
+  if (user) {
+    currentUser = user;
+    console.log("Sessió iniciada:", user.email);
+
+    document.getElementById("openLogin").classList.add("hidden");
+    document.getElementById("btnLogout").classList.remove("hidden");
+
+    renderYear();
+    loadWeek();
+    renderLlicons();
+  } else {
+    currentUser = null;
+    console.log("Cap usuari connectat.");
+
+    document.getElementById("openLogin").classList.remove("hidden");
+    document.getElementById("btnLogout").classList.add("hidden");
+  }
 });
 
 // ──────────────────────────────────────────
