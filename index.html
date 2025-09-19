@@ -8,6 +8,21 @@
   <link rel="icon" type="image/png" href="assets/logo-icon.png">
 </head>
 <body>
+  <!-- LOG IN -->
+  <dialog id="loginDlg" class="modal" aria-labelledby="login-title" aria-modal="true">
+  <h3 id="login-title">Inicia sessió</h3>
+  <div class="form-grid">
+    <input id="loginEmail" type="email" placeholder="Correu electrònic" />
+    <input id="loginPass" type="password" placeholder="Contrasenya" />
+  </div>
+  <div class="modal__actions">
+    <button id="registerBtn" class="btn ghost">Registrar-se</button>
+    <div class="modal__spacer"></div>
+    <button id="loginCancel" class="btn ghost">Cancel·lar</button>
+    <button id="loginBtn" class="btn primary">Entrar</button>
+  </div>
+</dialog>
+  
   <!-- CAPÇALERA -->
   <header class="topbar">
     <div class="topbar__inner">
@@ -17,6 +32,9 @@
            height="28"
            loading="eager"
            decoding="async">
+      <button id="loginToggle" class="btn ghost small">Inicia sessió</button>
+      <span id="userEmail" class="muted"></span>
+      <button id="logoutBtn" class="btn ghost small hidden">Tanca sessió</button>
     </div>
   </header>
 
