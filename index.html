@@ -7,22 +7,7 @@
   <link rel="stylesheet" href="css/style.css" />
   <link rel="icon" type="image/png" href="assets/logo-icon.png">
 </head>
-<body>
-  <!-- LOG IN -->
-  <dialog id="loginDlg" class="modal" aria-labelledby="login-title" aria-modal="true">
-  <h3 id="login-title">Inicia sessió</h3>
-  <div class="form-grid">
-    <input id="loginEmail" type="email" placeholder="Correu electrònic" />
-    <input id="loginPass" type="password" placeholder="Contrasenya" />
-  </div>
-  <div class="modal__actions">
-    <button id="registerBtn" class="btn ghost">Registrar-se</button>
-    <div class="modal__spacer"></div>
-    <button id="loginCancel" class="btn ghost">Cancel·lar</button>
-    <button id="loginBtn" class="btn primary">Entrar</button>
-  </div>
-</dialog>
-  
+<body>  
   <!-- CAPÇALERA -->
   <header class="topbar">
     <div class="topbar__inner">
@@ -133,5 +118,26 @@
       <button id="saveFranja" class="btn primary">Desar</button>
     </div>
   </dialog>
+
+  <!-- MODAL LOGIN -->
+<dialog id="loginDlg" class="modal">
+  <h3>Accés a Programeta</h3>
+  <div class="form-grid">
+    <input id="loginEmail" type="email" placeholder="Correu electrònic" />
+    <input id="loginPass" type="password" placeholder="Contrasenya" />
+  </div>
+  <div class="modal__actions">
+    <button id="btnRegister" class="btn primary">Registrar</button>
+    <button id="btnLogin" class="btn ghost">Iniciar sessió</button>
+    <div class="modal__spacer"></div>
+    <button id="btnCloseLogin" class="btn">Tancar</button>
+  </div>
+</dialog>
+
+<!-- BOTONS PER CONTROLAR SESSIÓ -->
+<div class="toolbar" style="margin:20px">
+  <button id="openLogin" class="btn primary">Iniciar sessió</button>
+  <button id="btnLogout" class="btn danger hidden">Tancar sessió</button>
+</div>
 </body>
 </html>
