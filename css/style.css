@@ -236,6 +236,38 @@ body.sidebar-collapsed .content{
   margin-left: 1100px;
 }
 
+/* ───────────────── Botons icona ───────────────── */
+.icon-btn {
+  border: none;
+  background: #111;       /* negre */
+  color: #fff;            /* blanc per contrast */
+  font-size: 18px;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background .2s, transform .1s;
+}
+
+.icon-btn:hover {
+  background: #333;
+  transform: translateY(-1px);
+}
+
+/* Info usuari (icona + email) */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: 10px;
+}
+
+.user-icon {
+  font-size: 18px;
+}
 
 /* ───────────────── Responsiu ───────────────── */
 @media (max-width: 720px){
