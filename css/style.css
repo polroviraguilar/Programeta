@@ -231,11 +231,6 @@ body.sidebar-collapsed .content{
   font-weight:700;
 }
 
-#userEmail {
-  margin-top: 10px;
-  margin-left: 1100px;
-}
-
 /* ───────────────── Botons icona ───────────────── */
 .icon-btn {
   border: none;
@@ -262,11 +257,20 @@ body.sidebar-collapsed .content{
   align-items: center;
   gap: 6px;
   margin-right: 10px;
+  margin-top: 10px;
+  margin-left: 1100px;
 }
 
 .user-info i {
   color: var(--accent-ink);
   font-size: 16px;
+}
+
+#btnLogout {
+  background-color: var(--accent);
+  color: black;
+  margin-top: 10px;
+  margin-left: 20px;
 }
 
 
