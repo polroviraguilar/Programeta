@@ -239,9 +239,9 @@ body.sidebar-collapsed .content{
 /* ───────────────── Botons icona ───────────────── */
 .icon-btn {
   border: none;
-  background: #111;       /* negre */
-  color: #fff;            /* blanc per contrast */
-  font-size: 18px;
+  background: #111;       /* cercle negre */
+  color: #fff;            /* icona blanca */
+  font-size: 16px;
   border-radius: 50%;
   width: 36px;
   height: 36px;
@@ -257,7 +257,6 @@ body.sidebar-collapsed .content{
   transform: translateY(-1px);
 }
 
-/* Info usuari (icona + email) */
 .user-info {
   display: flex;
   align-items: center;
@@ -265,9 +264,11 @@ body.sidebar-collapsed .content{
   margin-right: 10px;
 }
 
-.user-icon {
-  font-size: 18px;
+.user-info i {
+  color: var(--accent-ink);
+  font-size: 16px;
 }
+
 
 /* ───────────────── Responsiu ───────────────── */
 @media (max-width: 720px){
