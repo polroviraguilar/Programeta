@@ -375,13 +375,40 @@ onAuthStateChanged(auth, (user)=>{
 onAuthStateChanged(auth, (user)=>{
   if (user) {
     currentUser = user;
-    console.log("Sessió iniciada:", user.email);
+    console.log("Sessió iniciada:", user.email || user.uid);
+
+    // Mostrem contingut
+    document.querySelector(".layout").classList.remove("hidden");
+    document.querySelector(".footer").classList.remove("hidden");
+    document.getElementById("openLogin").classList.add("hidden");
+    document.getElementById("btnLogout").classList.remove("hidden");
+
     renderYear();
     loadWeek();
     renderLlicons();
   } else {
     currentUser = null;
     console.log("Cap usuari connectat.");
-    // Opcional: pots netejar la UI aquí
+
+    // Amaguem contingut
+    document.querySelector(".layout").classList.add("hidden");
+    document.querySelector(".footer").classList.add("hidden");
+    document.getElementById("openLogin").classList.remove("hidden");
+    document.getElementById("btnLogout").classList.add("hidden");
+
+    // Obrim login immediatament
+    const loginDlg = document.getElementById("loginDlg");
+    if (loginDlg && !loginDlg.open) {
+      loginDlg.showModal();
+    }
   }
+});
+
+// Bloquejar el tancament del modal si no hi ha usuari
+document.getElementById("btnCloseLogin")?.addEventListener("click", ()=>{
+  if (!currentUser) {
+    alert("Has d'iniciar sessió per accedir a Programeta.");
+    return;
+  }
+  loginDlg.close();
 });
