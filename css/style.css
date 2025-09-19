@@ -231,6 +231,12 @@ body.sidebar-collapsed .content{
   font-weight:700;
 }
 
+#userEmail {
+  margin-top: 10px;
+  margin-left: 1100px;
+}
+
+
 /* ───────────────── Responsiu ───────────────── */
 @media (max-width: 720px){
   .layout{flex-direction:column}
