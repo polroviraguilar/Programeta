@@ -18,7 +18,7 @@ html,body{height:100%}
 body{
   margin:0;
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Inter", sans-serif;
-  color:var(--ink);
+  color: var(--accent-ink);
   background:var(--bg);
   line-height:1.55;
 }
@@ -266,9 +266,9 @@ body.sidebar-collapsed .content{
   font-size: 16px;
 }
 
-#btnLogout {
+#btnLogout, #openLogin {
   background-color: var(--accent);
-  color: black;
+  color: var(--accent-ink);
   margin-top: 10px;
   margin-left: 20px;
 }
