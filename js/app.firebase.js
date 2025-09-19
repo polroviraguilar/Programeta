@@ -151,13 +151,18 @@ function renderWeek(){
   for (const t of TIMES){
     html += `<tr><th>${t}</th>`;
     for (let i=0;i<DAYS.length;i++){
-      const d = DAYS[i]; const key = `${d}|${t}`;
+      const d = DAYS[i]; 
+      const key = `${d}|${t}`;
       const f = franjaIndex.get(key);
-      const body = f ? (`<div class="act"><strong>${escapeHtml(f.curs||'')}</strong> — ${escapeHtml(f.assignatura||'')}</div>` +
-                        (f.activitat?`<div class="meta">${escapeHtml(f.activitat)}</div>`:'') +
-                        `<div class="meta">${f.tipus==='permanent'?'Permanent':'Aquesta setmana'}</div>`)
-                     : '<div class="meta">(buit)</div>';
-      html += `<td class="cell"><button class="edit" data-key="${key}">${f?'Editar':'Afegir'}</button>${body}</td>`;
+
+      const body = f 
+        ? (`<div class="act"><strong>${escapeHtml(f.curs||'')}</strong> — ${escapeHtml(f.assignatura||'')}</div>` +
+           (f.activitat?`<div class="meta">${escapeHtml(f.activitat)}</div>`:'') +
+           `<div class="meta">${f.tipus==='permanent'?'Permanent':'Aquesta setmana'}</div>`)
+        : '<div class="meta">(buit)</div>';
+
+      // 👇 ara el botó va DESPRÉS del contingut
+      html += `<td class="cell">${body}<button class="edit" data-key="${key}">${f?'Editar':'Afegir'}</button></td>`;
     }
     html += '</tr>';
   }
