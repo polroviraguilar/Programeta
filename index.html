@@ -10,18 +10,25 @@
 <body>  
   <!-- CAPÇALERA -->
   <header class="topbar">
-    <div class="topbar__inner">
-      <img src="assets/logo-tipo-umbra.png"
-           alt="Programeta"
-           class="brand__img"
-           height="28"
-           loading="eager"
-           decoding="async">
+  <div class="topbar__inner">
+    <img src="assets/logo-tipo-umbra.png"
+         alt="Programeta"
+         class="brand__img"
+         height="28"
+         loading="eager"
+         decoding="async">
+
+    <!-- Info usuari -->
+    <div class="user-info">
+      <span class="user-icon">👤</span>
       <span id="userEmail" class="muted"></span>
-      <button id="openLogin" class="btn primary">Iniciar sessió</button>
-      <button id="btnLogout" class="btn danger hidden">Tancar sessió</button>
     </div>
-  </header>
+
+    <!-- Botons sessió -->
+    <button id="openLogin" class="icon-btn" title="Iniciar sessió">🔑</button>
+    <button id="btnLogout" class="icon-btn hidden" title="Tancar sessió">🚪</button>
+  </div>
+</header>
 
   <div class="layout hidden">
     <!-- MENÚ LATERAL -->
