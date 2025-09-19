@@ -1,7 +1,10 @@
 // js/firebase.js
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js';
 import { 
-  getAuth, onAuthStateChanged, signInAnonymously 
+  getAuth, onAuthStateChanged,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut
 } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js';
 import {
   getFirestore, collection, addDoc, getDocs, query, where,
@@ -23,19 +26,42 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 
-// 🔑 Autenticació (login anònim per defecte)
-export function ensureAuth() {
-  return new Promise((resolve, reject) => {
-    onAuthStateChanged(auth, async (user) => {
-      try {
-        if (!user) { 
-          await signInAnonymously(auth);
-          return; 
-        }
-        resolve(user);
-      } catch (e) { reject(e); }
-    });
-  });
+// ──────────────────────────────────────────
+// AUTENTICACIÓ AMB EMAIL / PASSWORD
+// ──────────────────────────────────────────
+
+// Quan l’usuari entra o surt
+onAuthStateChanged(auth, (user)=>{
+  const emailSpan = document.getElementById("userEmail");
+  const logoutBtn = document.getElementById("logoutBtn");
+  const loginToggle = document.getElementById("loginToggle");
+
+  if(user){
+    console.log("Usuari connectat:", user.email);
+    if(emailSpan) emailSpan.textContent = user.email;
+    if(logoutBtn) logoutBtn.classList.remove("hidden");
+    if(loginToggle) loginToggle.classList.add("hidden");
+  }else{
+    console.log("Ningú connectat");
+    if(emailSpan) emailSpan.textContent = "";
+    if(logoutBtn) logoutBtn.classList.add("hidden");
+    if(loginToggle) loginToggle.classList.remove("hidden");
+  }
+});
+
+// Login
+export async function login(email, pass){
+  return signInWithEmailAndPassword(auth, email, pass);
+}
+
+// Registre
+export async function register(email, pass){
+  return createUserWithEmailAndPassword(auth, email, pass);
+}
+
+// Logout
+export async function logout(){
+  return signOut(auth);
 }
 
 // ──────────────────────────────────────────
