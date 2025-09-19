@@ -1,9 +1,13 @@
 // js/app.firebase.js — Versió amb Firestore
 
 import { 
-  ensureAuth, addFranja, updateFranja, deleteFranja, listFrangesForWeek,
+  login, register, logout,
+  addFranja, updateFranja, deleteFranja, listFrangesForWeek,
   addLlico, listLlicons
 } from './firebase.js';
+
+import { auth } from './firebase.js';
+import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js';
 
 // ──────────────────────────────────────────
 // Estat
@@ -305,12 +309,48 @@ function toCSV(rows){
   return lines.join('\n');
 }
 
+// Login
+document.getElementById("btnLogin")?.addEventListener("click", async ()=>{
+  const email = document.getElementById("loginEmail").value;
+  const pass = document.getElementById("loginPass").value;
+  try {
+    await login(email, pass);
+    alert("Sessió iniciada!");
+  } catch (e){
+    alert("Error login: " + e.message);
+  }
+});
+
+// Registre
+document.getElementById("btnRegister")?.addEventListener("click", async ()=>{
+  const email = document.getElementById("loginEmail").value;
+  const pass = document.getElementById("loginPass").value;
+  try {
+    await register(email, pass);
+    alert("Usuari registrat!");
+  } catch (e){
+    alert("Error registre: " + e.message);
+  }
+});
+
+// Logout
+document.getElementById("btnLogout")?.addEventListener("click", async ()=>{
+  await logout();
+});
+
 // ──────────────────────────────────────────
-// Inicialització
+// Inicialització amb usuari real
 // ──────────────────────────────────────────
-ensureAuth().then(user=>{
-  currentUser = user;
-  renderYear();
-  loadWeek();
-  renderLlicons();
+onAuthStateChanged(auth, (user)=>{
+  if (user) {
+    currentUser = user;
+    console.log("Sessió iniciada:", user.email);
+    renderYear();
+    loadWeek();
+    renderLlicons();
+  } else {
+    currentUser = null;
+    console.log("Cap usuari connectat.");
+    // Opcional: pots netejar la UI aquí
+  }
 });
